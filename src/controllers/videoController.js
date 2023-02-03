@@ -38,8 +38,23 @@ export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "Upload Video" });
 };
 
-export const postUpload = (req, res) => {
-  // her we will add a video a video to the videos array
-
-  return res.redirect("/");
+export const postUpload = async (req, res) => {
+  const { title, description, hashtags } = req.body;
+  try {
+    await Video.create({
+      title, //same with title : title
+      description, //same with description : description
+      hashtags: hashtags
+        .split(",")
+        .map((word) =>
+          !word.trim().startsWith("#") ? `#${word.trim()}` : word.trim()
+        ),
+    });
+    return res.redirect("/");
+  } catch (error) {
+    return res.render("upload", {
+      pageTitle: "Upload Video",
+      errorMessage: error._message,
+    });
+  }
 };
