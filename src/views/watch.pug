@@ -5,4 +5,5 @@ block content
   div   
     p=video.description
     small=video.createdAt
+    p=video.hashtags.join(" ")
   a(href=`${video.id}/edit`) Edit Video ▶
