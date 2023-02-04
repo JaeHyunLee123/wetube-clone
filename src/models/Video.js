@@ -11,6 +11,14 @@ const videoSchema = new mongoose.Schema({
   },
 });
 
+videoSchema.pre("save", async function () {
+  this.hashtags = this.hashtags[0] //유저가 입력한 hashtags가 통째로 배열의 첫번째 원소에 저장되기 때문에 hashtags[0]을 쓰는거임
+    .split(",")
+    .map((word) =>
+      !word.trim().startsWith("#") ? `#${word.trim()}` : word.trim()
+    );
+});
+
 const Video = mongoose.model("Video", videoSchema);
 
 export default Video;
