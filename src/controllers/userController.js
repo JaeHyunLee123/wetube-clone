@@ -67,8 +67,11 @@ export const postLogin = async (req, res) => {
     });
   }
 
+  req.session.loggedIn = true;
+  req.session.user = user;
   return res.redirect("/");
 };
+
 export const edit = (req, res) => res.send("Edit user");
 export const deleteAccount = (req, res) => res.send("delete user");
 export const seeProfile = (req, res) => res.send("Profile");
