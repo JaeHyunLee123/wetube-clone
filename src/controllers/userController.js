@@ -1,5 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import fetch from "node-fetch";
 
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
@@ -80,7 +81,7 @@ export const startGithubLogin = (req, res) => {
     allow_signup: false, //github 아이디가 있는 경우에만 로그인 허용
     scope: "read:user user:email", //github에 요구하는 정보 -> 유저 프로필과 유저 이메일
   };
-  const params = new URLSearchParams(config).toString; //config 객체 정보를 알아서 url 형식으로 바꿔줌
+  const params = new URLSearchParams(config).toString(); //config 객체 정보를 알아서 url 형식으로 바꿔줌
   const finalUrl = `${baseUrl}?${params}`;
   return res.redirect(finalUrl);
 };
@@ -92,16 +93,64 @@ export const callbackGithubLogin = async (req, res) => {
     client_secret: process.env.GH_SECRET,
     code: req.query.code,
   };
-  const params = new URLSearchParams(config).toString;
+  const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
-  const data = fetch(finalUrl, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-  const json = await data.json();
-  console.log(json);
+
+  const tokenRequest = await (
+    await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+  ).json();
+
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
+    const apiUrl = "https://api.github.com";
+    const userData = await (
+      await fetch(`${apiUrl}/user`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    ).json();
+    console.log(userData);
+
+    const emailData = await (
+      await fetch(`${apiUrl}/user/emails`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    ).json();
+    const emailObj = emailData.find(
+      (email) => email.verified === true && email.primary === true
+    );
+    if (!emailObj) return res.redirect("login");
+    const existingUser = await User.findOne({ email: emailObj.email });
+    if (existingUser) {
+      req.session.loggedIn = true;
+      req.session.user = existingUser;
+      return res.redirect("/");
+    } else {
+      //create user
+      const user = await User.create({
+        name: userData.name,
+        email: emailObj.email,
+        username: userData.login,
+        password: "",
+        location: userData.location,
+        socialOnly: true,
+      });
+
+      req.session.loggedIn = true;
+      req.session.user = user;
+      return res.redirect("/");
+    }
+  } else {
+    return res.redirect("login");
+  }
 };
 
 export const edit = (req, res) => res.send("Edit user");
