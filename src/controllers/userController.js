@@ -72,6 +72,38 @@ export const postLogin = async (req, res) => {
   return res.redirect("/");
 };
 
+export const startGithubLogin = (req, res) => {
+  const baseUrl = `https://github.com/login/oauth/authorize`;
+  const config = {
+    //camel case를 사용하지 않고 snake case를 사용한 이유는 깃허브가 설정한 파라미터 그대로 적어야하기 때문
+    client_id: process.env.GH_CLIENT_ID,
+    allow_signup: false, //github 아이디가 있는 경우에만 로그인 허용
+    scope: "read:user user:email", //github에 요구하는 정보 -> 유저 프로필과 유저 이메일
+  };
+  const params = new URLSearchParams(config).toString; //config 객체 정보를 알아서 url 형식으로 바꿔줌
+  const finalUrl = `${baseUrl}?${params}`;
+  return res.redirect(finalUrl);
+};
+
+export const callbackGithubLogin = async (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/access_token";
+  const config = {
+    client_id: process.env.GH_CLIENT_ID,
+    client_secret: process.env.GH_SECRET,
+    code: req.query.code,
+  };
+  const params = new URLSearchParams(config).toString;
+  const finalUrl = `${baseUrl}?${params}`;
+  const data = fetch(finalUrl, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+  const json = await data.json();
+  console.log(json);
+};
+
 export const edit = (req, res) => res.send("Edit user");
 export const deleteAccount = (req, res) => res.send("delete user");
 export const seeProfile = (req, res) => res.send("Profile");
