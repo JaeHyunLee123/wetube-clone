@@ -25,6 +25,8 @@ html(lang="en")
               a(href="/users/logout") Logout
             li 
               a(href="/profile") #{loggedInUser.username}'s profile
+            li  
+              a(href="/users/edit") Edit profile
     main  
       block content
   include partials/footer.pug

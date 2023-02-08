@@ -115,7 +115,6 @@ export const callbackGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log(userData);
 
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
@@ -150,10 +149,17 @@ export const callbackGithubLogin = async (req, res) => {
   }
 };
 
-export const edit = (req, res) => res.send("Edit user");
-export const deleteAccount = (req, res) => res.send("delete user");
-export const seeProfile = (req, res) => res.send("Profile");
 export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
+
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEdit = (req, res) => {
+  return res.redirect("/edit");
+};
+
+export const deleteAccount = (req, res) => res.send("delete user");
+export const seeProfile = (req, res) => res.send("Profile");
