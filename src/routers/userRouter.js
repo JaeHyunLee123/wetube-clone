@@ -9,13 +9,15 @@ import {
   callbackGithubLogin,
 } from "../controllers/userController";
 
+import { protectorMiddleware, publicOnlyMiddleWare } from "../middlewares";
+
 const userRouter = express.Router();
 
-userRouter.get("/logout", logout);
-userRouter.route("/edit").get(getEdit).post(postEdit);
+userRouter.get("/logout", protectorMiddleware, logout);
+userRouter.route("/edit").all(protectorMiddleware).get(getEdit).post(postEdit);
 userRouter.get("/delete", deleteAccount);
-userRouter.get("/github/start", startGithubLogin);
-userRouter.get("/github/callback", callbackGithubLogin);
+userRouter.get("/github/start", publicOnlyMiddleWare, startGithubLogin);
+userRouter.get("/github/callback", publicOnlyMiddleWare, callbackGithubLogin);
 userRouter.get("/:id", seeProfile);
 
 export default userRouter;
