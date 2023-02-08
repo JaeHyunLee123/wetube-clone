@@ -1,6 +1,7 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
+import session from "express-session";
 
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
@@ -41,7 +42,8 @@ export const postJoin = async (req, res) => {
     });
     return res.redirect("/login");
   } catch (error) {
-    return res.status(400).render("/join", {
+    console.log(error);
+    return res.status(400).render("join", {
       pageTitle: "Join",
       errorMessage: error._message,
     });
@@ -157,8 +159,53 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
-export const postEdit = (req, res) => {
-  return res.redirect("/edit");
+
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      //세션으로부터 user id를 받아온다
+      user: { _id },
+    },
+    //폼에 있는 정보들도 받아온다
+    body: { name, email, username, location },
+  } = req;
+
+  //중복 있으면 돌려보내
+  if (req.session.user.username !== username) {
+    const userNameExists = await User.exists({ username });
+    if (userNameExists) {
+      return res.status(400).render("edit-profile", {
+        pageTitle: "Edit Profile",
+        errorMessage: "This username is already taken",
+      });
+    }
+  }
+  if (req.session.user.email !== email) {
+    const userEmailExists = await User.exists({ email });
+    if (userEmailExists) {
+      return res.status(400).render("edit-profile", {
+        pageTitle: "Edit Profile",
+        errorMessage: "This email is already taken",
+      });
+    }
+  }
+
+  //받아온 user id와 정보들로 DB 업데이트하고
+  const udatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    //업데이트된 정보를 리턴하라는 옵션, default는 false
+    { new: true }
+  );
+
+  //세션도 업데이트
+  req.session.user = udatedUser;
+  return res.redirect("/users/edit");
 };
 
 export const deleteAccount = (req, res) => res.send("delete user");
