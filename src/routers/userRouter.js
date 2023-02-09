@@ -3,7 +3,7 @@ import {
   getEdit,
   postEdit,
   deleteAccount,
-  seeProfile,
+  getProfile,
   logout,
   startGithubLogin,
   callbackGithubLogin,
@@ -33,6 +33,6 @@ userRouter
 userRouter.get("/delete", deleteAccount);
 userRouter.get("/github/start", publicOnlyMiddleWare, startGithubLogin);
 userRouter.get("/github/callback", publicOnlyMiddleWare, callbackGithubLogin);
-userRouter.get("/:id", seeProfile);
+userRouter.get("/:id", getProfile);
 
 export default userRouter;
