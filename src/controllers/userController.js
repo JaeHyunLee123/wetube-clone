@@ -164,10 +164,11 @@ export const postEdit = async (req, res) => {
   const {
     session: {
       //세션으로부터 user id를 받아온다
-      user: { _id },
+      user: { _id, avatarUrl },
     },
     //폼에 있는 정보들도 받아온다
     body: { name, email, username, location },
+    file,
   } = req;
 
   //중복 있으면 돌려보내
@@ -191,20 +192,21 @@ export const postEdit = async (req, res) => {
   }
 
   //받아온 user id와 정보들로 DB 업데이트하고
-  const udatedUser = await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
       name,
       email,
       username,
       location,
+      avatarUrl: file ? file.path : avatarUrl,
     },
     //업데이트된 정보를 리턴하라는 옵션, default는 false
     { new: true }
   );
 
   //세션도 업데이트
-  req.session.user = udatedUser;
+  req.session.user = updatedUser;
   return res.redirect("/users/edit");
 };
 

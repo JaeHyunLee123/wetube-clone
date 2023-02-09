@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const localsMiddleWare = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
   res.locals.siteName = "Wetube";
@@ -21,4 +23,4 @@ export const publicOnlyMiddleWare = (req, res, next) => {
   }
 };
 
-export const uploadFiles = multer({ dest: "upload/" });
+export const uploadFiles = multer({ dest: "uploads/" });
