@@ -1,4 +1,4 @@
-extends base.pug
+extends ../base
 
 block content
   if(errorMessage)
@@ -9,3 +9,6 @@ block content
     input(name="username" type="text", required, placeholder="username" value=loggedInUser.username)
     input(name="location" type="text", required, placeholder="location" value=loggedInUser.location)
     input(type="submit" value="Update profile")
+    hr
+    if !loggedInUser.socialOnly
+      a(href="change-password") Change Password ▶
