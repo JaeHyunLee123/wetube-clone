@@ -3,6 +3,7 @@ html(lang="en")
   head
     title #{pageTitle} | #{siteName}
     link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+    link(rel="stylesheet" href="assets/css/style.css")
   body
     header
       h1 #{pageTitle}
@@ -30,4 +31,6 @@ html(lang="en")
               a(href="/users/edit") Edit profile
     main  
       block content
+
+  script(src="assets/js/main.js")
   include partials/footer.pug
