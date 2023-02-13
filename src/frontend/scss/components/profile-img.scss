@@ -1,0 +1,9 @@
+.profile-image__box{
+  display: flex;
+  justify-content: center;
+  img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+}

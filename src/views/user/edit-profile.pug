@@ -1,16 +1,27 @@
 extends ../base
 
 block content
-  img(src=`/${loggedInUser.avatarUrl}`, width="100" height="100")
+  if(loggedInUser.avatarUrl !== " ")
+    div.profile-image__box
+      img(src=`/${loggedInUser.avatarUrl}`)
   if(errorMessage )
     p=errorMessage
-  form(method="POST" enctype="multipart/form-data")
-    input(name="name" type="text", required, placeholder="name" value=loggedInUser.name)
-    input(name="email" type="email", required, placeholder="email" value=loggedInUser.email)
-    input(name="username" type="text", required, placeholder="username" value=loggedInUser.username)
-    input(name="location" type="text", required, placeholder="location" value=loggedInUser.location)
-    label(for="avatar") Avatar
-    input(name="avatar" id="avatar" type="file" accept="image/*")
+  form(method="POST" enctype="multipart/form-data").user__form
+    div
+      label(for="avatar") Avatar
+      input(name="avatar" id="avatar" type="file" accept="image/*")
+    div
+      label(for="name") Name
+      input(name="name" id="name" type="text", required, placeholder="name" value=loggedInUser.name)
+    div
+      label(for="email") Email
+      input(name="email" id="email" type="email", required, placeholder="email" value=loggedInUser.email)
+    div
+      label(for="username") Username
+      input(name="username" id="username" type="text", required, placeholder="username" value=loggedInUser.username)
+    div
+      label(for="location") Location
+      input(name="location" id="location" type="text", required, placeholder="location" value=loggedInUser.location)
     input(type="submit" value="Update profile")
     hr
     if !loggedInUser.socialOnly

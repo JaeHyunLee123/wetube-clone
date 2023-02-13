@@ -3,7 +3,7 @@ import User from "../models/User";
 
 export const home = async (req, res) => {
   try {
-    const videos = await Video.find({});
+    const videos = await Video.find({}).populate("owner");
     return res.render("home", { pageTitle: "Home", videos });
   } catch {
     return res.send("server-error");
@@ -100,7 +100,7 @@ export const deleteVideo = async (req, res) => {
   if (String(video.owner) !== String(userId)) {
     return res.status(403).redirect("/");
   }
-  
+
   await Video.findByIdAndDelete(id);
   user.videos.splice(user.videos.indexOf(id), 1);
   user.save();
@@ -112,7 +112,9 @@ export const search = async (req, res) => {
   const { keyword } = req.query;
   let videos = [];
   if (keyword) {
-    videos = await Video.find({ title: { $regex: new RegExp(keyword, "i") } });
+    videos = await Video.find({
+      title: { $regex: new RegExp(keyword, "i") },
+    }).populate("owner");
   }
   return res.render("video/search", { pageTitle: "Search", videos });
 };

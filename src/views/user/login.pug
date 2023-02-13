@@ -3,13 +3,16 @@ extends ../base
 block content  
   if(errorMessage)
     p=errorMessage
-  form(method="POST")
+  form(method="POST").user__form
     input(name="username" type="text", required, placeholder="username")
     input(name="password" type="password", required, placeholder="password")
     input(type="submit" value="Login")
     br
-    a(href="/users/github/start") Continue with Github &rarr;
+    div.user__form__social
+      a(href="/users/github/start") 
+        i.fa-brands.fa-github
+        span Continue with Github
   hr
   div   
     span Don't have an account? 
-    a(href="/join") Create one now &rarr;
+    a(href="/join") Create one now ▶

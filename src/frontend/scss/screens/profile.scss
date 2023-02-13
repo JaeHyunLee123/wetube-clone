@@ -1,0 +1,26 @@
+.profile__contents{
+  display: flex;
+  justify-content: center;
+  div{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border:2px solid $red;
+    border-radius: 10px;
+    margin: 20px 0px;
+    padding: 10px;
+    width: 40%;
+    background-color: rgba(255,255,255,0.1);
+    span{
+      display: block;
+      font-size:20px;
+      margin: 10px 0px;
+    }
+  }
+}
+
+.profile__video-title{
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom:20px;
+}

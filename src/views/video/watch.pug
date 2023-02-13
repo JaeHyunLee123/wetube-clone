@@ -1,16 +1,15 @@
-extends ../base.pug
-
+extends ../base
 
 block content
   video(src=`/${video.videoUrl}`,controls)
-  div   
-    p=video.description
-    small=video.createdAt
-  div
-    small Posted by 
+  div.watch__contents
+    p.watch__contents__title Title : #{video.title}
+    p Desciption: #{video.description}
+    p Uploaded at #{video.createdAt}
+    p Uploaded by 
       a(href=`/users/${video.owner._id}`)=video.owner.username
     p=video.hashtags.join(" ")
   if String(video.owner._id) === String(loggedInUser._id)
-    a(href=`${video.id}/edit`) Edit Video ▶
-    br
-    a(href=`${video.id}/delete`) Delete Video ▶
+    div.watch__btns
+      a(href=`${video.id}/edit`).watch__btn Edit Video ▶
+      a(href=`${video.id}/delete`).watch__btn Delete Video ▶

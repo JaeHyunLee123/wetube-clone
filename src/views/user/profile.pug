@@ -3,10 +3,18 @@ include ../mixins/video
 
 
 block content 
-  h2 #{user.username}'s videos
-  ul
+  if(loggedInUser.avatarUrl !== " ")
+    div.profile-image__box
+      img(src=`/${user.avatarUrl}`)
+  div.profile__contents
+    div
+      span Email: #{user.email}
+      span Username: #{user.username}
+      span Name: #{user.name}
+      span Location: #{user.location}  
+  h2.profile__video-title #{user.username}'s videos
+  div.video-grid 
     each item in user.videos
-      +video(item)
-
+      +video-profile(item)
     else 
       li Sorry nothing found
