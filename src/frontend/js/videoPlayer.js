@@ -36,12 +36,20 @@ const handleVolumeChange = (event) => {
   video.volume = event.target.value;
 };
 
+const formatTime = (seconds) => {
+  if (seconds >= 3600 * 1000) {
+    return new Date(seconds * 1000).toISOString().substring(11, 19);
+  } else {
+    return new Date(seconds * 1000).toISOString().substring(14, 19);
+  }
+};
+
 const handleLoadedMetaData = (event) => {
-  totalTime.innerText = Math.floor(video.duration);
+  totalTime.innerText = formatTime(Math.floor(video.duration));
 };
 
 const handelTimeUpdate = (event) => {
-  currentTime.innerText = Math.floor(video.currentTime);
+  currentTime.innerText = formatTime(Math.floor(video.currentTime));
 };
 
 playBtn.addEventListener("click", handlePlayClick);
