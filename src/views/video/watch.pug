@@ -1,7 +1,7 @@
 extends ../base
 
 block content
-  div#videoContainer
+  div#videoContainer(data-id=video._id)
     video(src=`/${video.videoUrl}`)
     div#videoControllers.videoControllers
       div.videoControllers__play
@@ -18,10 +18,9 @@ block content
           i.fa-solid.fa-volume-high
       span#fullScreen
         i.fa-solid.fa-expand
-
-
   div.watch__contents
     p.watch__contents__title Title : #{video.title}
+    p Views: #{video.meta.views}
     p Desciption: #{video.description}
     p Uploaded at #{video.createdAt}
     p Uploaded by 
