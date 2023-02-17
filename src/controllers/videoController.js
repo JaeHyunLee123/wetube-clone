@@ -118,3 +118,21 @@ export const search = async (req, res) => {
   }
   return res.render("video/search", { pageTitle: "Search", videos });
 };
+
+export const registerView = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    const targetVideo = await Video.findById(id);
+    if (!targetVideo) {
+      return res.status(404);
+    }
+    targetVideo.meta.views = targetVideo.meta.views + 1;
+    await targetVideo.save();
+    return res.status(200);
+  } catch (error) {
+    console.log(error);
+    return res.status(400);
+  }
+};
