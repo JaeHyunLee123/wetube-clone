@@ -70,6 +70,10 @@ const handleTimelineChange = (event) => {
   video.currentTime = event.target.value;
 };
 
+const changeVideoTime = (seconds) => {
+  video.currentTime += seconds;
+};
+
 const handelFullScreen = () => {
   if (document.fullscreenElement) {
     document.exitFullscreen();
@@ -110,5 +114,11 @@ video.addEventListener("click", handlePlayClick);
 document.addEventListener("keyup", (event) => {
   if (event.code === "Space") {
     handlePlayClick();
+  }
+  if (event.code === "ArrowRight") {
+    changeVideoTime(5);
+  }
+  if (event.code === "ArrowLeft") {
+    changeVideoTime(-5);
   }
 });
