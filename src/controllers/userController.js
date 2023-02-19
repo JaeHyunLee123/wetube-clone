@@ -154,7 +154,6 @@ export const callbackGithubLogin = async (req, res) => {
 
 export const logout = (req, res) => {
   req.session.destroy();
-  req.flash("info", "Bye bye");
   return res.redirect("/");
 };
 
@@ -251,7 +250,7 @@ export const postChangePassword = async (req, res) => {
   await user.save(); //save를 해줘야 비밀번호 해싱해주는 미들웨어 작동함
   req.flash("info", "Password updated");
   //비밀번호 바꾸면 유저 로그아웃 시켜서 다시 로그인하게 만들자
-  return res.redirect("user/logout");
+  return res.redirect("/users/logout");
 };
 
 export const getProfile = async (req, res) => {
