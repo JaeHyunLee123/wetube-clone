@@ -10,6 +10,7 @@ const videoSchema = new mongoose.Schema({
     rating: { type: Number, default: 0, require: true },
   },
   videoUrl: { type: String, require: true },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   owner: { type: mongoose.Schema.Types.ObjectId, require: true, ref: "User" },
 });
 
