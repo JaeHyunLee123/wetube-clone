@@ -30,5 +30,13 @@ block content
     div.watch__btns
       a(href=`${video.id}/edit`).watch__btn Edit Video ▶
       a(href=`${video.id}/delete`).watch__btn Delete Video ▶
+
+  if loggedIn
+    div.video__comments
+      form.video__comment-form#commentForm
+        textArea(cols="30", rows="10", placeholder="Write comment")
+        button Add Comment
+   
 block scripts   
   script(src="/assets/js/videoPlayer.js")
+  script(src="/assets/js/commentSection.js")
