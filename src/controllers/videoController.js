@@ -151,11 +151,22 @@ export const createComment = async (req, res) => {
     return res.sendStatus(404);
   }
 
+  const owner = await User.findById(user._id);
+  if (!owner) {
+    return res.sendStatus(404);
+  }
+
   const comment = await Comment.create({
     text,
     owner: user._id,
     video: id,
   });
+
+  video.comments.push(comment._id);
+  await video.save();
+
+  owner.comments.push(comment._id);
+  await owner.save();
 
   return res.sendStatus(201);
 };
