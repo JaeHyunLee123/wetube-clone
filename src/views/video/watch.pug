@@ -40,7 +40,7 @@ block content
   div.video__comments
     ul
       each comment in video.comments.reverse()
-        li.video__comment
+        li(data-id=comment._id).video__comment
           i.fa-regular.fa-comment
           span=comment.text
    
