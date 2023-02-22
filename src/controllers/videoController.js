@@ -170,3 +170,46 @@ export const createComment = async (req, res) => {
 
   return res.status(201).json({ newCommentId: comment._id });
 };
+
+export const deleteComment = async (req, res) => {
+  const {
+    params: { id }, //this id is video id
+    session: { user },
+    body: { commentId },
+  } = req;
+
+  console.log(id);
+  console.log(user._id);
+  console.log(commentId);
+
+  try {
+    const video = await Video.findById(id);
+    if (!video) {
+      return res.sendStatus(404);
+    }
+
+    const userFromDB = await User.findById(user._id);
+    if (!userFromDB) {
+      return res.sendStatus(404);
+    }
+
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.sendStatus(404);
+    }
+
+    //user.videos.splice(user.videos.indexOf(id), 1);
+    video.comments.splice(video.comments.indexOf(commentId), 1);
+    await video.save();
+
+    userFromDB.comments.splice(userFromDB.comments.indexOf(commentId), 1);
+    await userFromDB.save();
+
+    await Comment.findByIdAndDelete(commentId);
+
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(`Delete Comment Error: ${error}`);
+    return res.sendStatus(400);
+  }
+};
