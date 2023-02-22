@@ -28,7 +28,7 @@ const handlePlayClick = (event) => {
     : "fa-solid fa-pause";
 };
 
-const handleMute = (event) => {
+const handleMute = () => {
   if (video.muted) {
     video.muted = false;
   } else {
@@ -128,6 +128,16 @@ document.addEventListener("keyup", (event) => {
     }
     if (event.code === "ArrowLeft") {
       changeVideoTime(-5);
+    }
+    if (event.code === "ArrowUp") {
+      if (video.muted) handleMute();
+      video.volume = video.volume + 0.1 > 1 ? 1 : video.volume + 0.1;
+      volumeRange.value = video.volume;
+    }
+    if (event.code === "ArrowDown") {
+      if (video.muted) handleMute();
+      video.volume = video.volume - 0.1 < 0 ? 0 : video.volume - 0.1;
+      volumeRange.value = video.volume;
     }
   }
 });
