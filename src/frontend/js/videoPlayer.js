@@ -107,6 +107,32 @@ const handleEnded = () => {
   fetch(`/api/videos/${id}/view`, { method: "POST" });
 };
 
+const handleKeyUp = (event) => {
+  if (isfocusOnVideo) {
+    const { code } = event;
+
+    if (code === "Space") {
+      handlePlayClick();
+    }
+    if (code === "ArrowRight") {
+      changeVideoTime(5);
+    }
+    if (code === "ArrowLeft") {
+      changeVideoTime(-5);
+    }
+    if (code === "ArrowUp") {
+      if (video.muted) handleMute();
+      video.volume = video.volume + 0.1 > 1 ? 1 : video.volume + 0.1;
+      volumeRange.value = video.volume;
+    }
+    if (code === "ArrowDown") {
+      if (video.muted) handleMute();
+      video.volume = video.volume - 0.1 < 0 ? 0 : video.volume - 0.1;
+      volumeRange.value = video.volume;
+    }
+  }
+};
+
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolumeChange);
@@ -118,30 +144,7 @@ fullScreenBtn.addEventListener("click", handelFullScreen);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 video.addEventListener("click", handlePlayClick);
-document.addEventListener("keyup", (event) => {
-  if (isfocusOnVideo) {
-    if (event.code === "Space") {
-      handlePlayClick();
-    }
-    if (event.code === "ArrowRight") {
-      changeVideoTime(5);
-    }
-    if (event.code === "ArrowLeft") {
-      changeVideoTime(-5);
-    }
-    if (event.code === "ArrowUp") {
-      if (video.muted) handleMute();
-      video.volume = video.volume + 0.1 > 1 ? 1 : video.volume + 0.1;
-      volumeRange.value = video.volume;
-    }
-    if (event.code === "ArrowDown") {
-      if (video.muted) handleMute();
-      video.volume = video.volume - 0.1 < 0 ? 0 : video.volume - 0.1;
-      volumeRange.value = video.volume;
-    }
-  }
-});
-
+document.addEventListener("keyup", handleKeyUp);
 document.addEventListener("click", (event) => {
   const { target } = event;
 
@@ -149,5 +152,19 @@ document.addEventListener("click", (event) => {
     isfocusOnVideo = true;
   } else {
     isfocusOnVideo = false;
+  }
+});
+document.addEventListener("keydown", (event) => {
+  if (isfocusOnVideo) {
+    const { code } = event;
+    if (
+      code === "Space" ||
+      code === "ArrowRight" ||
+      code === "ArrowLeft" ||
+      code === "ArrowUp" ||
+      code === "ArrowDown"
+    ) {
+      event.preventDefault();
+    }
   }
 });
