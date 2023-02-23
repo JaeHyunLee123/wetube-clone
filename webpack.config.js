@@ -9,8 +9,6 @@ module.exports = {
     videoPlayer: JS_PATH + "videoPlayer.js",
     commentSection: JS_PATH + "commentSection.js",
   },
-  mode: "development",
-  watch: true,
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/style.css",
