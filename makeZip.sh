@@ -1,1 +1,0 @@
-git archive -v -o wetube.zip --format=zip HEAD
