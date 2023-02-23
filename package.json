@@ -7,6 +7,8 @@
     "url": "git+https://github.com/JaeHyunLee123/wetube_clone.git"
   },
   "scripts": {
+    "start": "node build/init.js",
+    "build:server": "babel src -d build",
     "dev:server": "nodemon",
     "dev:assets": "webpack"
   },
@@ -36,7 +38,8 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.12",
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.0",
     "@babel/node": "^7.20.7",
     "@babel/preset-env": "^7.20.2",
     "@prettier/plugin-pug": "^2.4.1",
