@@ -3,6 +3,15 @@ const preview = document.getElementById("preview");
 
 let stream = null;
 let recorder = null;
+let videoFile = null;
+
+const handleDownload = () => {
+  const a = document.createElement("a");
+  a.href = videoFile;
+  a.download = "MyRecord.webm"; //filename.fileformat
+  document.body.appendChild(a);
+  a.click();
+};
 
 const handleStart = () => {
   recordBtn.innerText = "Stop recording";
@@ -12,7 +21,7 @@ const handleStart = () => {
   recorder = new MediaRecorder(stream);
   recorder.ondataavailable = (event) => {
     //Can get video from event.data
-    const videoFile = URL.createObjectURL(event.data);
+    videoFile = URL.createObjectURL(event.data);
     //Set preview's source to recorded video
     preview.srcObject = null;
     preview.src = videoFile;
@@ -24,9 +33,9 @@ const handleStart = () => {
 };
 
 const handleStop = () => {
-  recordBtn.innerText = "Start recoring";
+  recordBtn.innerText = "Download recording";
   recordBtn.removeEventListener("click", handleStop);
-  recordBtn.addEventListener("click", handleStart);
+  recordBtn.addEventListener("click", handleDownload);
 
   recorder.stop();
 };
