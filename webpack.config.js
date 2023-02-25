@@ -8,6 +8,7 @@ module.exports = {
     main: JS_PATH + "main.js",
     videoPlayer: JS_PATH + "videoPlayer.js",
     commentSection: JS_PATH + "commentSection.js",
+    recorder: JS_PATH + "recorder.js"
   },
   plugins: [
     new MiniCssExtractPlugin({
