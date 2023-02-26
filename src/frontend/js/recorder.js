@@ -16,18 +16,38 @@ const handleDownload = async () => {
   //this function run ffmpeg code that use in terminal
   //this fucntion convert recording.wemb to output.mp4 and encode 60 frames for a sec
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
-  //this is raw video data consists of unsigned integer array
+  //this function capture the video at the moment of "00:00:01"
+  await ffmpeg.run(
+    "-i",
+    "recording.webm",
+    "-ss",
+    "00:00:01",
+    "-frames:v",
+    "1",
+    "thumbnail.jpg"
+  );
+
+  //this is raw data consists of unsigned integer array
   const mp4File = ffmpeg.FS("readFile", "output.mp4");
-  //this is real video
+  const thumbFile = ffmpeg.FS("readFile", "thumbnail.jpg");
+  //this is real video and jpg
   const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
+  const thumbBlob = new Blob([thumbFile.buffer], { type: "image/jpg" });
 
   const mp4Url = URL.createObjectURL(mp4Blob);
+  const thumbUrl = URL.createObjectURL(thumbBlob);
 
   const a = document.createElement("a");
   a.href = mp4Url;
   a.download = "MyRecord.mp4"; //filename.fileformat
   document.body.appendChild(a);
   a.click();
+
+  const thumbA = document.createElement("a");
+  thumbA.href = thumbUrl;
+  thumbA.download = "MyThumbnail.jpg"; //filename.fileformat
+  document.body.appendChild(thumbA);
+  thumbA.click();
 };
 
 const handleStart = () => {
