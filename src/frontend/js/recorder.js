@@ -1,3 +1,5 @@
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+
 const recordBtn = document.getElementById("recordBtn");
 const preview = document.getElementById("preview");
 
@@ -5,7 +7,16 @@ let stream = null;
 let recorder = null;
 let videoFile = null;
 
-const handleDownload = () => {
+const handleDownload = async () => {
+  //create a ffmpeg object and load
+  const ffmpeg = createFFmpeg({ log: true });
+  await ffmpeg.load();
+  //make a file to convert
+  ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile));
+  //this function run ffmpeg code that use in terminal
+  //this fucntion convert recording.wemb to output.mp4 and encode 60 frames for a sec
+  await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
+
   const a = document.createElement("a");
   a.href = videoFile;
   a.download = "MyRecord.webm"; //filename.fileformat
