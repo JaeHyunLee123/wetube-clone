@@ -22,6 +22,10 @@ const downloadFile = (fileUrl, filename) => {
 };
 
 const handleDownload = async () => {
+  recordBtn.removeEventListener("click", handleDownload);
+  recordBtn.innerText = "Downloading...";
+  recordBtn.disabled = true;
+
   //create a ffmpeg object and load
   const ffmpeg = createFFmpeg({ log: true });
   await ffmpeg.load();
