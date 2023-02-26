@@ -21,7 +21,13 @@ videoRouter
   .route("/upload")
   .all(protectorMiddleware)
   .get(getUpload)
-  .post(uploadVideo.single("videoFile"), postUpload);
+  .post(
+    uploadVideo.fields([
+      { name: "videoFile", maxCount: 1 },
+      { name: "thumbFile", maxCount: 1 },
+    ]),
+    postUpload
+  );
 videoRouter
   .route("/:id([0-9a-f]{24})/delete")
   .all(protectorMiddleware)

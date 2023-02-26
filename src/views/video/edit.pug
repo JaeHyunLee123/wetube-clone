@@ -7,7 +7,7 @@ block content
       input(id="title" name="title" placeholder="New title", value=video.title, required)
     div
       label(for="description") Description
-      input(id="description" name="description" placeholder="Description" value=video.description type="text", required, minlength="20")
+      input(id="description" name="description" placeholder="Description" value=video.description type="text", required)
     div
       label(for="hashtags") Hashtags
       input(id="hashtags" name="hashtags" placeholder="Hashtags, seperated by comma." value=video.hashtags.join(" ") type="text", required)
