@@ -16,10 +16,16 @@ const handleDownload = async () => {
   //this function run ffmpeg code that use in terminal
   //this fucntion convert recording.wemb to output.mp4 and encode 60 frames for a sec
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
+  //this is raw video data consists of unsigned integer array
+  const mp4File = ffmpeg.FS("readFile", "output.mp4");
+  //this is real video
+  const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
+
+  const mp4Url = URL.createObjectURL(mp4Blob);
 
   const a = document.createElement("a");
-  a.href = videoFile;
-  a.download = "MyRecord.webm"; //filename.fileformat
+  a.href = mp4Url;
+  a.download = "MyRecord.mp4"; //filename.fileformat
   document.body.appendChild(a);
   a.click();
 };
