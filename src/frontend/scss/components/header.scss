@@ -2,8 +2,7 @@ header{
   padding: 20px 50px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  
+  align-items: center;  
   
   h1{
     font-size: 45px;
@@ -18,10 +17,22 @@ header{
     width: 33%;
   }
 
-  nav{
+  .menu__icon{
+    display: flex;
+    flex-direction: row-reverse;
     width: 33%;
+    i {
+      font-size: 40px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
   }
+}
 
+.menu__bar{  
+  transition: transform 500ms ease-in-out;
+  padding: 20px 50px;
   ul{
     display:flex;
     justify-content: flex-end;
@@ -31,7 +42,7 @@ header{
       text-transform: uppercase;
       text-align: center;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 25px;
       
       display: flex;
       justify-content: center;
@@ -39,8 +50,20 @@ header{
     }
     i{
       padding: 0px 5px;
-      font-size:15px;
+      font-size:20px;
     }
   }
+}
 
+.apear{
+  animation: apear 500ms ease-in-out forwards; 
+}
+
+@keyframes apear {
+  from{
+    transform: translate(100%,0);
+  }
+  to{
+    transform: translate(0,0);
+  }
 }
