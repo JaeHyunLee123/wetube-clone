@@ -15,15 +15,6 @@ html(lang="en")
     main  
       block content
     include partials/footer.pug
-    div.loading__screen.hide
-      div.middle
-        div.bar.bar1 
-        div.bar.bar2 
-        div.bar.bar3 
-        div.bar.bar4 
-        div.bar.bar5 
-        div.bar.bar6 
-        div.bar.bar7 
-        div.bar.bar8 
+    include partials/loadingScreen.pug
     block scripts
       script(src="/assets/js/main.js")
