@@ -2,6 +2,7 @@ import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 
 const recordBtn = document.getElementById("recordBtn");
 const preview = document.getElementById("preview");
+const loadingScreen = document.querySelector(".loading__screen");
 
 let stream = null;
 let recorder = null;
@@ -22,6 +23,8 @@ const downloadFile = (fileUrl, filename) => {
 };
 
 const handleDownload = async () => {
+  loadingScreen.classList.remove("hide");
+  document.body.style.overflow = "hidden";
   recordBtn.removeEventListener("click", handleDownload);
   recordBtn.innerText = "Downloading...";
   recordBtn.disabled = true;
@@ -69,6 +72,8 @@ const handleDownload = async () => {
   recordBtn.addEventListener("click", handleStart);
   recordBtn.innerText = "Record Again";
   recordBtn.disabled = false;
+  loadingScreen.classList.add("hide");
+  document.body.style.overflow = "auto";
 };
 
 const handleStart = () => {
