@@ -5,7 +5,7 @@ include ../mixins/video
 block content 
   if(loggedInUser.avatarUrl !== " ")
     div.profile-image__box
-      img(src=`/${user.avatarUrl}`)
+      img(src=`${user.avatarUrl}` crossorigin="anonymous")
   div.profile__contents
     div
       span Email: #{user.email}

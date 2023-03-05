@@ -200,7 +200,7 @@ export const postEdit = async (req, res) => {
       email,
       username,
       location,
-      avatarUrl: file ? file.path : avatarUrl,
+      avatarUrl: file ? User.formatAvatarUrl(file.path) : avatarUrl,
     },
     //업데이트된 정보를 리턴하라는 옵션, default는 false
     { new: true }
